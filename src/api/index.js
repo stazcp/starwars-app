@@ -1,18 +1,14 @@
 const BASE_URL = 'https://swapi.dev/api/'
 
 export const fetchData = async (meta) => {
-  try {
-    let resp = await fetch(BASE_URL + meta)
-    if (!resp.ok) throw new Error('Fetch failed!')
-    let data = await resp.json()
-    console.log(data)
-    return data
-  } catch (error) {
-    console.error(error)
-  }
+  return fetchUrl(BASE_URL + meta)
 }
 
-export const fetchNextPage = async (url) => {
+export const fetchPage = async (page) => {
+  return fetchUrl(`${BASE_URL}people/?page=${page}`)
+}
+
+export const fetchUrl = async (url) => {
   try {
     let resp = await fetch(url)
     if (!resp.ok) throw new Error('Fetch failed!')

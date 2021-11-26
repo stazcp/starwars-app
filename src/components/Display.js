@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { fetchData, fetchNextPage } from '../api'
+import { fetchData, fetchPage, fetchUrl } from '../api'
 import PersonButton from './PersonButton'
 import { Grid, Box, Container, Pagination } from '@mui/material'
 import SpeciesRadio from './SpeciesRadio'
@@ -32,10 +32,6 @@ export default function Display() {
     }
   }, [currentSpecies])
 
-  // useEffect(() => {
-
-  // }, [page])
-
   const init = async () => {
     if (!species.length) getAllSpecies()
   }
@@ -46,6 +42,15 @@ export default function Display() {
     setPeople(data)
   }
 
+  const getPage = async (page) => {
+    const data = await fetchPage(page)
+    if (data) {
+      setPeople(data)
+    } else {
+      console.error('Page does not exist!')
+    }
+  }
+
   const countPages = (totalPeople, peoplePerPage) =>
     setPageCount(Math.round(totalPeople / peoplePerPage))
 
@@ -54,7 +59,7 @@ export default function Display() {
     let data = await fetchData('species')
     addSpecies(data)
     while (data.next) {
-      data = await fetchNextPage(data.next)
+      data = await fetchUrl(data.next)
       addSpecies(data)
     }
     setLoadingData(false)
@@ -95,6 +100,7 @@ export default function Display() {
   }
 
   const handlePageChange = (event, value) => {
+    getPage(value)
     setPage(value)
   }
 
