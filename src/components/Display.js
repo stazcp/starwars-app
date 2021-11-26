@@ -5,7 +5,7 @@ import { Grid, Box, Container, Pagination } from '@mui/material'
 import SpeciesRadio from './SpeciesRadio'
 
 export default function Display() {
-  const [people, setPeople] = useState()
+  const [people, setPeople] = useState([])
   const [totalPeople, setTotalPeople] = useState()
   const [species, setSpecies] = useState([])
   const [currentSpecies, setCurrentSpecies] = useState({})
