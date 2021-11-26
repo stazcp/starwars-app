@@ -5,8 +5,7 @@ import { Grid, Box, Container, Pagination } from '@mui/material'
 import SpeciesRadio from './SpeciesRadio'
 
 export default function Display() {
-  const [people, setPeople] = useState([])
-  const [totalPeople, setTotalPeople] = useState()
+  const [people, setPeople] = useState()
   const [species, setSpecies] = useState([])
   const [currentSpecies, setCurrentSpecies] = useState({})
   const [loadingData, setLoadingData] = useState(true) // loading species list from api
@@ -19,11 +18,11 @@ export default function Display() {
   }, [])
 
   useEffect(() => {
-    if (!loadingData && !people.length) getPeople()
+    if (!loadingData && !people) getPeople()
   }, [loadingData])
 
   useEffect(() => {
-    if (people.length) sortPeople()
+    if (people) sortPeople()
   }, [people])
 
   // pretty much sets default value for displayed species of people once data is ready
@@ -33,6 +32,10 @@ export default function Display() {
     }
   }, [currentSpecies])
 
+  // useEffect(() => {
+
+  // }, [page])
+
   const init = async () => {
     if (!species.length) getAllSpecies()
   }
@@ -40,12 +43,7 @@ export default function Display() {
   const getPeople = async () => {
     let data = await fetchData('people')
     countPages(data.count, data.results.length)
-    let newPeople = data.results.map((person) => {
-      person.species = findSpecies(person)
-      return person
-    })
-    // data.results = newPeople
-    setPeople(newPeople)
+    setPeople(data)
   }
 
   const countPages = (totalPeople, peoplePerPage) =>
@@ -70,8 +68,8 @@ export default function Display() {
   const sortPeople = () => {
     const sortedPeople = {}
     if (people) {
-      people.map((person) => {
-        let specie = person.species
+      people.results.map((person) => {
+        let specie = findSpecies(person)
         if (specie in sortedPeople) {
           sortedPeople[specie].push(person)
         } else {
