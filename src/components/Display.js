@@ -135,7 +135,7 @@ export default function Display() {
             `loading species...`
           )}
           <Container maxWidth="md">
-            <Box>{renderPeople()}</Box>
+            <Box height={500}>{renderPeople()}</Box>
           </Container>
         </Box>
         <Pagination
@@ -143,7 +143,8 @@ export default function Display() {
           variant="outlined"
           color="primary"
           onChange={handlePageChange}
-          sx={{ justifyContent: 'center', display: 'flex', paddingTop: 10 }}
+          sx={{ position: 'absolute', bottom: 15, left: '50%', transform: `translate(-50%, -50%)` }}
+          // sx={{ justifyContent: 'center', display: 'flex', paddingTop: 10 }}
         />
       </Box>
     </Container>

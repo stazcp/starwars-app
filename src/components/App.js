@@ -29,8 +29,9 @@ export default function App() {
           backgroundImage: `url(${starWars})`,
           backgroundColor: `black`,
           backgroundSize: 'cover',
-          backgroundRepear: 'repeat',
-          height: size.height
+          backgroundRepeat: 'no-repeat',
+          height: size.height,
+          minHeight: 500
         }}>
         <Display />
       </div>
