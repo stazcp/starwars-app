@@ -1,9 +1,12 @@
 import React from 'react'
-import Display from './Display'
+import Home from './Home'
 import darthVader from '../images/darthVader.jpg'
 import starWars from '../images/starWars.jpg'
 import useWindowSize from '../hooks/windowSize'
+import CssBaseline from '@mui/material/CssBaseline'
+import Person from './Person'
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles'
+import { Routes, Route } from 'react-router-dom'
 
 const darkTheme = createTheme({
   palette: {
@@ -22,6 +25,7 @@ export default function App() {
 
   return (
     <ThemeProvider theme={darkTheme}>
+      <CssBaseline />
       <div
         style={{
           paddingBottom: 100,
@@ -33,7 +37,10 @@ export default function App() {
           height: size.height,
           minHeight: 500
         }}>
-        <Display />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="person/:name" element={<Person />} />
+        </Routes>
       </div>
     </ThemeProvider>
   )

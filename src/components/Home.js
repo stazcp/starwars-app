@@ -4,7 +4,7 @@ import PersonButton from './PersonButton'
 import { Grid, Box, Container, Pagination } from '@mui/material'
 import SpeciesRadio from './SpeciesRadio'
 
-export default function Display() {
+export default function Home() {
   const [people, setPeople] = useState()
   const [species, setSpecies] = useState([])
   const [currentSpecies, setCurrentSpecies] = useState()
