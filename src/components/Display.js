@@ -7,7 +7,7 @@ import SpeciesRadio from './SpeciesRadio'
 export default function Display() {
   const [people, setPeople] = useState()
   const [species, setSpecies] = useState([])
-  const [currentSpecies, setCurrentSpecies] = useState({})
+  const [currentSpecies, setCurrentSpecies] = useState()
   const [loadingData, setLoadingData] = useState(true) // loading species list from api
   const [displayedSpecies, setDisplayedSpecies] = useState()
   const [page, setPage] = useState(0)
@@ -27,10 +27,12 @@ export default function Display() {
 
   // pretty much sets default value for displayed species of people once data is ready
   useEffect(() => {
-    if (Object.keys(currentSpecies).length > 0) {
-      setDisplayedSpecies(Object.keys(currentSpecies)[0])
-    }
+    if (currentSpecies) resetDisplaySpecies()
   }, [currentSpecies])
+
+  const resetDisplaySpecies = () => {
+    setDisplayedSpecies(Object.keys(currentSpecies)[0])
+  }
 
   const init = async () => {
     if (!species.length) getAllSpecies()
@@ -102,6 +104,21 @@ export default function Display() {
   const handlePageChange = (event, value) => {
     getPage(value)
     setPage(value)
+    setDisplayedSpecies()
+  }
+
+  const renderPeople = () => {
+    if (displayedSpecies && currentSpecies) {
+      return (
+        <Grid container alignItems="center" justifyContent="center" spacing={0}>
+          {currentSpecies[displayedSpecies].map((person) => (
+            <Grid item key={person.name} height={200}>
+              <PersonButton name={person.name} />
+            </Grid>
+          ))}
+        </Grid>
+      )
+    }
   }
 
   return (
@@ -118,17 +135,7 @@ export default function Display() {
             `loading species...`
           )}
           <Container maxWidth="md">
-            <Box>
-              {displayedSpecies ? (
-                <Grid container alignItems="center" justifyContent="center" spacing={0}>
-                  {currentSpecies[displayedSpecies].map((person) => (
-                    <Grid item key={person.name}>
-                      <PersonButton name={person.name} />
-                    </Grid>
-                  ))}
-                </Grid>
-              ) : null}
-            </Box>
+            <Box>{renderPeople()}</Box>
           </Container>
         </Box>
         <Pagination
