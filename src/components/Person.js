@@ -5,4 +5,4 @@ export default function Person() {
 }
 
 // create context to pass data, dynamic routing here
-// don't forget search function and sounds
+// don't forget search function and sounds!
