@@ -1,7 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { Container } from '@mui/material'
+import { SvgLayout } from './SvgLayout'
+import { AppContext } from '../store/appContext'
 
 export default function Person() {
-  return <div>new Person</div>
+  const { person } = useContext(AppContext)
+  return (
+    <Container maxWidth="md">
+      <SvgLayout>{person.name}</SvgLayout>
+    </Container>
+  )
 }
 
 // create context to pass data, dynamic routing here

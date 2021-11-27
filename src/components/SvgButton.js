@@ -99,10 +99,6 @@ const CustomButtonRoot = styled(ButtonRoot)(
   }`
 )
 
-const SvgButton = React.forwardRef(function SvgButton(props, ref) {
+export const SvgButton = React.forwardRef(function SvgButton(props, ref) {
   return <ButtonUnstyled {...props} component={CustomButtonRoot} ref={ref} />
 })
-
-export default function PersonButton({ name }) {
-  return <SvgButton>{name}</SvgButton>
-}

@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { fetchData, fetchPage, fetchUrl } from '../api'
-import PersonButton from './PersonButton'
+import { SvgButton } from './SvgButton'
 import { Grid, Box, Container, Pagination } from '@mui/material'
 import SpeciesRadio from './SpeciesRadio'
+import { useNavigate } from 'react-router-dom'
+import { AppContext } from '../store/appContext'
 
 export default function Home() {
   const [people, setPeople] = useState()
@@ -12,6 +14,8 @@ export default function Home() {
   const [displayedSpecies, setDisplayedSpecies] = useState()
   const [page, setPage] = useState(0)
   const [pageCount, setPageCount] = useState(1)
+  const { setPerson } = useContext(AppContext)
+  const navigate = useNavigate()
 
   useEffect(() => {
     init()
@@ -107,13 +111,34 @@ export default function Home() {
     setDisplayedSpecies()
   }
 
+  const handleClick = (e) => {
+    let name = e.target.parentNode.parentNode.id
+    let result = searchPearson(name)
+    console.log(result)
+    setPerson(result)
+    name = name.split(' ').join('-')
+    navigate(`/person/${name}`, { replace: true })
+  }
+
+  const searchPearson = (name) => {
+    let result
+    people.results.map((person) => {
+      if (person.name == name) {
+        result = person
+      }
+    })
+    return result
+  }
+
   const renderPeople = () => {
     if (displayedSpecies && currentSpecies) {
       return (
         <Grid container alignItems="center" justifyContent="center" spacing={2}>
           {currentSpecies[displayedSpecies].map((person) => (
             <Grid item key={person.name}>
-              <PersonButton name={person.name} />
+              <div id={person.name} onClick={(e) => handleClick(e)}>
+                <SvgButton>{person.name}</SvgButton>
+              </div>
             </Grid>
           ))}
         </Grid>
@@ -122,7 +147,7 @@ export default function Home() {
   }
 
   return (
-    <Container maxWidth="lg" sx={{ marginTop: 8, height: '100%' }}>
+    <Container maxWidth="lg">
       <Box sx={{ flexDirection: 'column', display: 'flex' }}>
         <Box sx={{ flexDirection: 'row', display: 'flex' }}>
           {displayedSpecies ? (
