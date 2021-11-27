@@ -110,9 +110,9 @@ export default function Display() {
   const renderPeople = () => {
     if (displayedSpecies && currentSpecies) {
       return (
-        <Grid container alignItems="center" justifyContent="center" spacing={0}>
+        <Grid container alignItems="center" justifyContent="center" spacing={2}>
           {currentSpecies[displayedSpecies].map((person) => (
-            <Grid item key={person.name} height={200}>
+            <Grid item key={person.name}>
               <PersonButton name={person.name} />
             </Grid>
           ))}
