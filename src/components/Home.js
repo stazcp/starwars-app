@@ -138,8 +138,11 @@ export default function Home() {
     setPeople(result)
   }
 
+  const readyToRender = () =>
+    displayedSpecies && currentSpecies && people && species && !loadingData
+
   const renderPeople = () => {
-    if (displayedSpecies && currentSpecies) {
+    if (readyToRender) {
       try {
         if (currentSpecies[displayedSpecies].length) {
           return (
