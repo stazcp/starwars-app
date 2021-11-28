@@ -7,11 +7,11 @@ const ButtonRoot = React.forwardRef(function ButtonRoot(props, ref) {
   const { children, ...other } = props
 
   return (
-    <svg width="200" height="200" {...other} ref={ref}>
+    <svg width="600" height="600" {...other} ref={ref}>
       <rect x="0" y="0" width="600" height="600" fill="rgb(0, 0, 0, 0.5)" />
       <polygon points="0,605 5,5 605,0 600,600" className="bg" />
       <polygon points="0,605 5,5 605,0 600,600" className="borderEffect" />
-      <foreignObject x="0" y="0" width="200" height="200">
+      <foreignObject x="0" y="0" width="600" height="600">
         <div className="content">{children}</div>
       </foreignObject>
     </svg>

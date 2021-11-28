@@ -114,10 +114,12 @@ export default function Home() {
   // click navigates us to new page and sets the person context
   const handleClick = (e) => {
     let name = e.target.parentNode.parentNode.id
-    let result = searchPearson(name)
-    setPerson(result)
-    name = name.split(' ').join('-')
-    navigate(`/person/${name}`, { replace: true })
+    let person = searchPearson(name)
+    setPerson(person)
+    let splitUrl = person.url.split('/')
+    let id = splitUrl[splitUrl.length - 2]
+    // name = name.split(' ').join('-')
+    navigate(`/people/${id}`, { replace: true })
   }
 
   const searchPearson = (name) => {

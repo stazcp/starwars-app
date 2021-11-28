@@ -41,7 +41,7 @@ export default function App() {
           }}>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="person/:name" element={<Person />} />
+            <Route path="people/:id" element={<Person />} />
           </Routes>
         </div>
       </AppContextProvider>

@@ -8,6 +8,10 @@ export const fetchPage = async (page) => {
   return fetchUrl(`${BASE_URL}people/?page=${page}`)
 }
 
+export const fetchPerson = async (id) => {
+  return fetchUrl(`${BASE_URL}people/${id}/`)
+}
+
 export const fetchUrl = async (url) => {
   try {
     let resp = await fetch(url)
