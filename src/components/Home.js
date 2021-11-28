@@ -6,17 +6,22 @@ import SpeciesRadio from './SpeciesRadio'
 import { useNavigate } from 'react-router-dom'
 import { AppContext } from '../store/appContext'
 import SearchAppBar from './SearchAppBar'
+import useMediaQuery from '@mui/material/useMediaQuery'
 
 export default function Home() {
   const [people, setPeople] = useState()
   const [species, setSpecies] = useState([])
-  const [currentSpecies, setCurrentSpecies] = useState()
+  const [currentSpecies, setCurrentSpecies] = useState({})
   const [loadingData, setLoadingData] = useState(true) // loading species list from api
-  const [displayedSpecies, setDisplayedSpecies] = useState()
+  const [displayedSpecies, setDisplayedSpecies] = useState(
+    currentSpecies ? Object.keys(currentSpecies)[0] : null
+  )
   const [page, setPage] = useState(0)
   const [pageCount, setPageCount] = useState(1)
   const { setPerson } = useContext(AppContext)
   const navigate = useNavigate()
+  const smallLaptop = useMediaQuery('(max-width:1130px)')
+  const md = useMediaQuery('(max-width:764px)')
 
   useEffect(() => {
     init()
@@ -119,7 +124,7 @@ export default function Home() {
     setPerson(person)
     let splitUrl = person.url.split('/')
     let id = splitUrl[splitUrl.length - 2]
-    // name = name.split(' ').join('-')
+    // name = name.split(' ').join('-')   // to display name in path
     navigate(`/people/${id}`, { replace: true })
   }
 
@@ -138,19 +143,29 @@ export default function Home() {
     setPeople(result)
   }
 
-  const readyToRender = () =>
-    displayedSpecies && currentSpecies && people && species && !loadingData
+  const buttonSize = () => {
+    let elements = currentSpecies[displayedSpecies].length
+    if (elements > 6 && smallLaptop) return 150
+    if (elements < 8) return 200
+  }
 
   const renderPeople = () => {
-    if (readyToRender) {
+    if (displayedSpecies in currentSpecies) {
       try {
         if (currentSpecies[displayedSpecies].length) {
           return (
-            <Grid container alignItems="center" justifyContent="center" spacing={2}>
+            <Grid
+              container
+              alignItems="center"
+              justifyContent="center"
+              spacing={2}
+              sx={{ maxHeight: 600, overflowY: 'auto' }}>
               {currentSpecies[displayedSpecies].map((person) => (
                 <Grid item key={person.name}>
                   <div id={person.name} onClick={(e) => handleClick(e)}>
-                    <SvgButton>{person.name}</SvgButton>
+                    <SvgButton newSize={200}>
+                      <Box sx={{ padding: 2 }}>{person.name}</Box>
+                    </SvgButton>
                   </div>
                 </Grid>
               ))}
@@ -182,7 +197,7 @@ export default function Home() {
             )}
           </Box>
           <Container maxWidth="md" sx={{ marginLeft: -1 }}>
-            <Box height={500}>{renderPeople()}</Box>
+            <Box sx={{}}>{renderPeople()}</Box>
           </Container>
         </Box>
         <Pagination

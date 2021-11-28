@@ -1,17 +1,48 @@
-import * as React from 'react'
+import React, { forwardRef, useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import ButtonUnstyled, { buttonUnstyledClasses } from '@mui/base/ButtonUnstyled'
 import { styled } from '@mui/system'
+import useMediaQuery from '@mui/material/useMediaQuery'
+import useWindowSize from '../hooks/windowSize'
 
-const ButtonRoot = React.forwardRef(function ButtonRoot(props, ref) {
+const ButtonRoot = forwardRef(function ButtonRoot(props, ref) {
+  const [size, setSize] = useState('150')
+  const [offset, setOffset] = useState('155')
+  const [polygonValues, setPolygonValues] = useState('0,155 ,5 155,0 150, 150')
   const { children, ...other } = props
+  const sm = useMediaQuery('(max-width:600px)')
+  const tablet = useMediaQuery('(max-width:900px)')
+  const desktop = useMediaQuery('(min-width:900px)')
+  const screenSize = useWindowSize()
+
+  useEffect(() => {
+    resetSize()
+  }, [])
+
+  useEffect(() => {
+    if (sm) {
+      resetSize(110)
+    } else if (tablet) {
+      resetSize(150)
+    } else if (desktop) {
+      resetSize(200)
+    } else {
+      resetSize(150)
+    }
+  }, [screenSize])
+
+  const resetSize = (value = 150) => {
+    setSize(`${value}`)
+    setOffset(`${value + 5}`)
+    setPolygonValues(`0,${value + 5} 5,5 ${value + 5},0 ${value},${value}`)
+  }
 
   return (
-    <svg width="200" height="200" {...other} ref={ref}>
-      <rect x="0" y="0" width="200" height="200" fill="rgb(0, 0, 0, 0.5)" />
-      <polygon points="0,205 5,5 205,0 200,200" className="bg" />
-      <polygon points="0,205 5,5 205,0 200,200" className="borderEffect" />
-      <foreignObject x="0" y="0" width="200" height="200">
+    <svg width={size} height={size} {...other} ref={ref}>
+      <rect x="0" y="0" width={size} height={size} fill="rgb(0, 0, 0, 0.5)" />
+      <polygon points={polygonValues} className="bg" />
+      <polygon points={polygonValues} className="borderEffect" />
+      <foreignObject x="0" y="0" width={size} height={size}>
         <div className="content">{children}</div>
       </foreignObject>
     </svg>
@@ -99,6 +130,6 @@ const CustomButtonRoot = styled(ButtonRoot)(
   }`
 )
 
-export const SvgButton = React.forwardRef(function SvgButton(props, ref) {
+export const SvgButton = forwardRef(function SvgButton(props, ref) {
   return <ButtonUnstyled {...props} component={CustomButtonRoot} ref={ref} />
 })
