@@ -8,9 +8,9 @@ const ButtonRoot = React.forwardRef(function ButtonRoot(props, ref) {
 
   return (
     <svg width="200" height="200" {...other} ref={ref}>
-      <rect x="0" y="0" width="200" height="200" fill="rgb(0, 0, 0, 0.5)" />
-      <polygon points="0,205 5,5 205,0 200,200" className="bg" />
-      <polygon points="0,205 5,5 205,0 200,200" className="borderEffect" />
+      <rect x="0" y="0" width="600" height="600" fill="rgb(0, 0, 0, 0.5)" />
+      <polygon points="0,605 5,5 605,0 600,600" className="bg" />
+      <polygon points="0,605 5,5 605,0 600,600" className="borderEffect" />
       <foreignObject x="0" y="0" width="200" height="200">
         <div className="content">{children}</div>
       </foreignObject>
@@ -50,7 +50,7 @@ const CustomButtonRoot = styled(ButtonRoot)(
   & .borderEffect {
     stroke: var(--main-color);
     stroke-width: 2;
-    stroke-dasharray: 200 600;
+    stroke-dasharray: 600 600;
     stroke-dashoffset: 200;
     fill: transparent;
   }

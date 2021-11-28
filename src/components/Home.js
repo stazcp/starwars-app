@@ -111,10 +111,10 @@ export default function Home() {
     setDisplayedSpecies()
   }
 
+  // click navigates us to new page and sets the person context
   const handleClick = (e) => {
     let name = e.target.parentNode.parentNode.id
     let result = searchPearson(name)
-    console.log(result)
     setPerson(result)
     name = name.split(' ').join('-')
     navigate(`/person/${name}`, { replace: true })
