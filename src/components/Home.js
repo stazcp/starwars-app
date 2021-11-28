@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useContext } from 'react'
-import { fetchData, fetchPage, fetchUrl } from '../api'
+import { fetchData, fetchPage, fetchUrl, fetchSearch } from '../api'
 import { SvgButton } from './SvgButton'
 import { Grid, Box, Container, Pagination } from '@mui/material'
 import SpeciesRadio from './SpeciesRadio'
 import { useNavigate } from 'react-router-dom'
 import { AppContext } from '../store/appContext'
+import SearchAppBar from './SearchAppBar'
 
 export default function Home() {
   const [people, setPeople] = useState()
@@ -132,19 +133,30 @@ export default function Home() {
     return result
   }
 
+  const handleSearch = async (e) => {
+    let result = await fetchSearch(e.target.value)
+    setPeople(result)
+  }
+
   const renderPeople = () => {
     if (displayedSpecies && currentSpecies) {
-      return (
-        <Grid container alignItems="center" justifyContent="center" spacing={2}>
-          {currentSpecies[displayedSpecies].map((person) => (
-            <Grid item key={person.name}>
-              <div id={person.name} onClick={(e) => handleClick(e)}>
-                <SvgButton>{person.name}</SvgButton>
-              </div>
+      try {
+        if (currentSpecies[displayedSpecies].length) {
+          return (
+            <Grid container alignItems="center" justifyContent="center" spacing={2}>
+              {currentSpecies[displayedSpecies].map((person) => (
+                <Grid item key={person.name}>
+                  <div id={person.name} onClick={(e) => handleClick(e)}>
+                    <SvgButton>{person.name}</SvgButton>
+                  </div>
+                </Grid>
+              ))}
             </Grid>
-          ))}
-        </Grid>
-      )
+          )
+        }
+      } catch (error) {
+        console.error(error)
+      }
     }
   }
 
@@ -152,16 +164,21 @@ export default function Home() {
     <Container maxWidth="lg">
       <Box sx={{ flexDirection: 'column', display: 'flex' }}>
         <Box sx={{ flexDirection: 'row', display: 'flex' }}>
-          {displayedSpecies ? (
-            <SpeciesRadio
-              species={Object.keys(currentSpecies)}
-              handleChange={handleSpecieChange}
-              value={displayedSpecies}
-            />
-          ) : (
-            `loading species...`
-          )}
-          <Container maxWidth="md">
+          <Box sx={{ flexDirection: 'column', display: 'flex' }}>
+            <Box sx={{ width: 200, paddingBottom: 2, marginLeft: '-20px' }}>
+              <SearchAppBar handleSearch={handleSearch} />
+            </Box>
+            {displayedSpecies ? (
+              <SpeciesRadio
+                species={Object.keys(currentSpecies)}
+                handleChange={handleSpecieChange}
+                value={displayedSpecies}
+              />
+            ) : (
+              `loading species...`
+            )}
+          </Box>
+          <Container maxWidth="md" sx={{ marginLeft: -1 }}>
             <Box height={500}>{renderPeople()}</Box>
           </Container>
         </Box>

@@ -12,6 +12,20 @@ export const fetchPerson = async (id) => {
   return fetchUrl(`${BASE_URL}people/${id}/`)
 }
 
+export const fetchArray = async (array) => {
+  let result = await Promise.all(
+    array.map(async (x) => {
+      let data = await fetchUrl(x)
+      return data?.name
+    })
+  )
+  return result?.length ? result : ['Not found']
+}
+
+export const fetchSearch = async (value) => {
+  return fetchUrl(`${BASE_URL}people/?search=${value}`)
+}
+
 export const fetchUrl = async (url) => {
   try {
     let resp = await fetch(url)

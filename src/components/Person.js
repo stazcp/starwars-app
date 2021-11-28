@@ -6,12 +6,13 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
 import { Typography, Box, IconButton } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { useParams } from 'react-router'
-import { fetchPerson, fetchUrl } from '../api'
+import { fetchPerson, fetchUrl, fetchArray } from '../api'
 
 export default function Person() {
   const { person, setPerson } = useContext(AppContext)
   const [homeworld, setHomeworld] = useState('')
   const [ships, setShips] = useState([])
+  const [vehicles, setVehicles] = useState([])
   const { id } = useParams()
 
   const navigate = useNavigate()
@@ -24,6 +25,7 @@ export default function Person() {
     if (person) {
       getHomeworld()
       getStarships()
+      getVehicles()
     }
   }, [person])
 
@@ -42,16 +44,21 @@ export default function Person() {
   }
 
   const getStarships = async () => {
-    if (person.starships.length) {
-      let starships = await Promise.all(
-        person.starships.map(async (ship) => {
-          let result = await fetchUrl(ship)
-          return result?.name
-        })
-      )
-      setShips(starships)
+    if (person?.starships?.length) {
+      let data = await fetchArray(person.starships)
+      setShips(data)
     }
   }
+
+  const getVehicles = async () => {
+    if (person?.vehicles?.length) {
+      console.log('getting vehicles')
+      let data = await fetchArray(person.vehicles)
+      setVehicles(data)
+    }
+  }
+
+  const renderArray = (array) => (array.length ? array.map((x) => ` ${x}`) : 'none')
 
   return (
     <Container maxWidth="lg" sx={{ flexDirection: 'row', display: 'flex' }}>
@@ -77,10 +84,8 @@ export default function Person() {
           <Typography variant="body1">{`Birth Year: ${person?.birth_year}`}</Typography>
           <Typography variant="body1">{`Gender: ${person?.gender}`}</Typography>
           <Typography variant="body1">{`Films: ${person?.films?.length}`}</Typography>
-          <Typography variant="body1">{`Starships: ${
-            ships.length ? ships.map((ship) => ` ${ship}`) : 'none'
-          }`}</Typography>
-          <Typography variant="body1">{`Vehicles: ${person?.vehicles?.length}`}</Typography>
+          <Typography variant="body1">{`Starships: ${renderArray(ships)}`}</Typography>
+          <Typography variant="body1">{`Vehicles: ${renderArray(vehicles)}`}</Typography>
         </div>
       </SvgLayout>
     </Container>
