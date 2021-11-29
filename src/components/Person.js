@@ -17,6 +17,20 @@ import Poster6 from '../images/poster6.jpg'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import PosterModal from './PosterModal'
 
+const styles = {
+  posterBox: {
+    maxHeight: '76vh',
+    overflowY: 'auto',
+    paddingLeft: 2
+  },
+  mobilePosterBox: {
+    display: 'flex',
+    flexDirection: 'row',
+    overflowX: 'scroll',
+    width: '100%'
+  }
+}
+
 export default function Person() {
   const { person, setPerson } = useContext(AppContext)
   const [homeworld, setHomeworld] = useState('')
@@ -25,7 +39,8 @@ export default function Person() {
   const [openModal, setOpenModal] = useState(false)
   const [chosenPoster, setChosenPoster] = useState(Poster6)
   const { id } = useParams()
-  const sm = useMediaQuery('(max-width:750px)')
+  const tablet = useMediaQuery('(max-width:750px)')
+  const mobile = useMediaQuery('(max-width:600px)')
 
   const navigate = useNavigate()
 
@@ -113,51 +128,81 @@ export default function Person() {
   return (
     <Container
       maxWidth="lg"
-      sx={{ flexDirection: 'row', display: 'flex', justifyContent: 'space-between' }}>
+      sx={{
+        flexDirection: [mobile ? 'column' : 'row'],
+        display: 'flex',
+        justifyContent: 'space-between',
+        paddingTop: 6
+      }}>
       <Box
         sx={{
-          flexDirection: 'row',
+          flexDirection: [tablet ? 'column' : 'row'],
           display: 'flex',
           justifyContent: 'flex-start',
           alignItems: 'flex-start'
         }}>
-        <Box sx={{ maxWidth: '90px', marginRight: 2 }}>
-          <IconButton size="small" edge="end" onClick={handleReturn}>
-            <Box
-              sx={{ display: 'flex', flexDirection: 'column', paddingRight: 10, paddingTop: 10 }}>
-              <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-                <ArrowBackIosNewIcon fontSize="large" />
-                <ArrowBackIosNewIcon fontSize="large" sx={{ marginLeft: -2 }} />
-                <ArrowBackIosNewIcon fontSize="large" sx={{ marginLeft: -2 }} />
-              </Box>
-              <Typography variant="body2">BACK</Typography>
-            </Box>
-          </IconButton>
-        </Box>
-        <SvgLayout>
+        <IconButton
+          sx={{ width: '90px', height: '90px', marginRight: 2, marginTop: [tablet ? -5 : 0] }}
+          size="small"
+          edge="end"
+          onClick={handleReturn}>
           <Box
             sx={{
               display: 'flex',
               flexDirection: 'column',
-              padding: 2
+              p: 1
             }}>
-            <Typography variant="h4">{person?.name}</Typography>
-            <Typography variant="body1">{`Homeworld: ${homeworld}`}</Typography>
-            <Typography variant="body1">{`Height: ${person?.height}`}</Typography>
-            <Typography variant="body1">{`Mass: ${person?.mass}`}</Typography>
-            <Typography variant="body1">{`Hair Color: ${person?.hair_color}`}</Typography>
-            <Typography variant="body1">{`Eye Color: ${person?.eye_color}`}</Typography>
-            <Typography variant="body1">{`Birth Year: ${person?.birth_year}`}</Typography>
-            <Typography variant="body1">{`Gender: ${person?.gender}`}</Typography>
-            <Typography variant="body1">{`Films: ${person?.films?.length}`}</Typography>
-            <Typography variant="body1">{`Starships: ${renderArray(ships)}`}</Typography>
-            <Typography variant="body1">{`Vehicles: ${renderArray(vehicles)}`}</Typography>
+            <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+              <ArrowBackIosNewIcon fontSize="large" />
+              <ArrowBackIosNewIcon fontSize="large" sx={{ marginLeft: -2 }} />
+              <ArrowBackIosNewIcon fontSize="large" sx={{ marginLeft: -2 }} />
+            </Box>
+            <Typography variant="body2">BACK</Typography>
           </Box>
-        </SvgLayout>
+        </IconButton>
+        <Box sx={{ alignSelf: { xs: 'center', sm: 'flex-start' } }}>
+          <SvgLayout>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                padding: 2
+              }}>
+              <Typography variant="h4">{person?.name}</Typography>
+              <Typography variant="body1">
+                {`Homeworld: ${homeworld}`}
+                <br />
+                {`Height: ${person?.height}`}
+                <br />
+                {`Mass: ${person?.mass}`}
+                <br />
+                {`Hair Color: ${person?.hair_color}`}
+                <br />
+                {`Eye Color: ${person?.eye_color}`}
+                <br />
+                {`Birth Year: ${person?.birth_year}`}
+                <br />
+                {`Gender: ${person?.gender}`}
+                <br />
+                {`Films: ${person?.films?.length}`}
+                <br />
+                {`Starships: ${renderArray(ships)}`}
+                <br />
+                {`Vehicles: ${renderArray(vehicles)}`}
+              </Typography>
+            </Box>
+          </SvgLayout>
+        </Box>
       </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          p: { xs: 2, sm: 0 }
+        }}>
         FILM POSTERS
-        <Box sx={{ maxHeight: '76vh', overflowY: 'auto', paddingLeft: 2 }}>{renderPosters()}</Box>
+        <Box sx={[mobile ? styles.mobilePosterBox : styles.posterBox]}>{renderPosters()}</Box>
       </Box>
       <PosterModal open={openModal} handleClose={handleCloseModal} poster={chosenPoster} />
     </Container>

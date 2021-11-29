@@ -8,6 +8,21 @@ import { AppContext } from '../store/appContext'
 import SearchAppBar from './SearchAppBar'
 import useMediaQuery from '@mui/material/useMediaQuery'
 
+const styles = {
+  pages: {
+    position: 'absolute',
+    bottom: 15,
+    left: '50%',
+    transform: `translate(-50%, -50%)`
+  },
+  pagesAlt: {
+    justifyContent: 'center',
+    display: 'flex',
+    marginBottom: 1,
+    marginTop: 1
+  }
+}
+
 export default function Home() {
   const [people, setPeople] = useState()
   const [species, setSpecies] = useState([])
@@ -25,7 +40,7 @@ export default function Home() {
   const md_height = useMediaQuery('(max-height:620px)')
   const desktop = useMediaQuery('(min-width:1130px)')
   const xxl = useMediaQuery('(min-width:1600px) and (min-height:800px)')
-  // const sm = useMediaQuery('(max-width: )')
+  const mobile = useMediaQuery('(max-width:600px)')
 
   useEffect(() => {
     init()
@@ -170,24 +185,34 @@ export default function Home() {
       try {
         if (currentSpecies[displayedSpecies].length) {
           return (
-            <Grid
-              container
-              alignItems="center"
-              justifyContent="center"
-              spacing={2}
-              sx={{ maxHeight: '85vh', overflowY: [setOverflow()] }}>
-              {currentSpecies[displayedSpecies].map((person) => (
-                <Grid item key={person.name}>
-                  <div id={person.name} onClick={(e) => handleClick(e)}>
-                    <SvgButton newSize={buttonSize()}>
-                      <Box sx={{ padding: 2 }}>
-                        <Typography variant="body1"> {person.name}</Typography>
-                      </Box>
-                    </SvgButton>
-                  </div>
-                </Grid>
-              ))}
-            </Grid>
+            <Box>
+              <Grid
+                container
+                alignItems="center"
+                justifyContent="center"
+                spacing={2}
+                direction={mobile ? 'column' : 'row'}
+                sx={{
+                  maxHeight: { xs: '50vh', sm: '85vh' },
+                  overflowY: { xs: 'hidden', sm: [setOverflow()] },
+                  overflowX: 'auto',
+                  paddingTop: { xs: 3, sm: 0 },
+                  paddingBottom: { xs: 2, sm: 0 },
+                  marginBottom: { xs: 3, sm: 0 }
+                }}>
+                {currentSpecies[displayedSpecies].map((person) => (
+                  <Grid item key={person.name}>
+                    <Box id={person.name} onClick={(e) => handleClick(e)}>
+                      <SvgButton newSize={buttonSize()}>
+                        <Box sx={{ padding: 2 }}>
+                          <Typography variant="body1"> {person.name}</Typography>
+                        </Box>
+                      </SvgButton>
+                    </Box>
+                  </Grid>
+                ))}
+              </Grid>
+            </Box>
           )
         }
       } catch (error) {
@@ -197,18 +222,17 @@ export default function Home() {
   }
 
   const paginationStyles = () => {
-    if (md || md_height) {
-      return { justifyContent: 'center', display: 'flex', marginBottom: 1, marginTop: 1 }
-    }
-    return { position: 'absolute', bottom: 15, left: '50%', transform: `translate(-50%, -50%)` }
+    // if (mobile) return styles.pages
+    if (md || md_height) return styles.pagesAlt
+    return styles.pages
   }
 
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="lg" sx={{ p: 6 }}>
       <Box sx={{ flexDirection: 'column', display: 'flex' }}>
-        <Box sx={{ flexDirection: 'row', display: 'flex' }}>
+        <Box sx={{ flexDirection: { xs: 'column', sm: 'row' }, display: 'flex' }}>
           <Box sx={{ flexDirection: 'column', display: 'flex' }}>
-            <Box sx={{ width: 200, paddingBottom: 2, marginLeft: '-20px' }}>
+            <Box sx={{ width: 200, p: 2, marginLeft: -2 }}>
               <SearchAppBar handleSearch={handleSearch} />
             </Box>
             {displayedSpecies ? (
@@ -218,14 +242,13 @@ export default function Home() {
                 value={displayedSpecies}
               />
             ) : (
-              `loading species...`
+              <Typography variant="body1">Loading...</Typography>
             )}
           </Box>
-          <Container maxWidth="md" sx={{ marginLeft: -1 }}>
-            <Box sx={{}}>{renderPeople()}</Box>
-          </Container>
+          <Container maxWidth="md">{renderPeople()}</Container>
         </Box>
         <Pagination
+          size={mobile ? 'small' : 'medium'}
           count={pageCount}
           variant="outlined"
           color="primary"

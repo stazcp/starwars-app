@@ -8,6 +8,7 @@ import Person from './Person'
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles'
 import { Routes, Route } from 'react-router-dom'
 import AppContextProvider from '../store/appContext'
+import { Box } from '@mui/system'
 
 const font = "'Press Start 2P', 'cursive'"
 
@@ -21,29 +22,22 @@ const theme = createTheme({
       fontSize: '1.6rem',
       '@media (max-width:900px)': {
         fontSize: '1rem'
+      },
+      '@media (max-width:600px)': {
+        fontSize: '0.9rem'
       }
     },
     body1: {
       fontSize: '0.8rem',
       '@media (max-width:900px)': {
         fontSize: '0.7rem'
+      },
+      '@media (max-width:600px)': {
+        fontSize: '0.65rem'
       }
     }
   }
 })
-
-// theme.typography.body1 = {
-//   fontSize: '0.8rem',
-//   fontWeight: 400
-//   // fontFamily: font
-//   //   // fontSize: '1.2rem',
-//   //   // '@media (min-width:600px)': {
-//   //   //   fontSize: '1.5rem'
-//   //   // },
-//   //   // [theme.breakpoints.up('md')]: {
-//   //   //   fontSize: '2rem'
-//   //   // }
-// }
 
 export default function App() {
   const size = useWindowSize()
@@ -52,22 +46,21 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <AppContextProvider>
         <CssBaseline />
-        <div
-          style={{
-            paddingBottom: 100,
-            paddingTop: 50,
+        <Box
+          sx={{
             backgroundImage: `url(${starWars})`,
             backgroundColor: `black`,
             backgroundSize: 'cover',
             backgroundRepeat: 'no-repeat',
             height: size.height,
-            minHeight: 500
+            minHeight: { xs: '100vh', sm: '500px' },
+            minWidth: '330px'
           }}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="people/:id" element={<Person />} />
           </Routes>
-        </div>
+        </Box>
       </AppContextProvider>
     </ThemeProvider>
   )

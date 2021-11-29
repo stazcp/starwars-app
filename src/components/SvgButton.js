@@ -21,7 +21,7 @@ const ButtonRoot = forwardRef(function ButtonRoot(props, ref) {
 
   useEffect(() => {
     if (sm) {
-      resetSize(110)
+      resetSize(130)
     } else if (tablet) {
       resetSize(150)
     } else if (desktop) {

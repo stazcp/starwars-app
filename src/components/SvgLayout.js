@@ -10,7 +10,7 @@ const ButtonRoot = forwardRef(function ButtonRoot(props, ref) {
   const [offset, setOffset] = useState('505')
   const [polygonValues, setPolygonValues] = useState('0,505 5,5 505,0 500, 500')
   const { children, ...other } = props
-  const sm = useMediaQuery('(max-width:600px)')
+  const mobile = useMediaQuery('(max-width:600px)')
   const tablet = useMediaQuery('(max-width:900px)')
   const desktop = useMediaQuery('(min-width:900px)')
   const screenSize = useWindowSize()
@@ -20,7 +20,9 @@ const ButtonRoot = forwardRef(function ButtonRoot(props, ref) {
   }, [])
 
   useEffect(() => {
-    if (desktop) {
+    if (mobile) {
+      resetSize(300)
+    } else if (desktop) {
       resetSize(500)
     } else {
       resetSize(350)
