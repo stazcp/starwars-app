@@ -20,14 +20,15 @@ import PosterModal from './PosterModal'
 const styles = {
   posterBox: {
     maxHeight: '76vh',
-    overflowY: 'auto',
+    overflow: 'auto',
     paddingLeft: 2
   },
   mobilePosterBox: {
     display: 'flex',
     flexDirection: 'row',
-    overflowX: 'scroll',
-    width: '100%'
+    overflow: 'auto',
+    width: '100%',
+    justifyContent: 'center'
   }
 }
 
