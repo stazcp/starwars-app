@@ -12,8 +12,9 @@ const styles = {
   pages: {
     position: 'absolute',
     bottom: 15,
-    left: '50%',
-    transform: `translate(-50%, -50%)`
+    left: '55%',
+    transform: `translate(-50%, -50%)`,
+    width: { xs: '80vw', sm: 'auto' } // test
   },
   pagesAlt: {
     justifyContent: 'center',
@@ -185,7 +186,7 @@ export default function Home() {
       try {
         if (currentSpecies[displayedSpecies].length) {
           return (
-            <Box>
+            <Box sx={{ marginLeft: { xs: -3, sm: 0 }, marginRight: { xs: -3, sm: 0 } }}>
               <Grid
                 container
                 alignItems="center"
@@ -193,12 +194,12 @@ export default function Home() {
                 spacing={2}
                 direction={mobile ? 'column' : 'row'}
                 sx={{
-                  maxHeight: { xs: '50vh', sm: '85vh' },
+                  maxHeight: { xs: '60vh', sm: '85vh' },
                   overflowY: { xs: 'hidden', sm: [setOverflow()] },
                   overflowX: 'auto',
-                  paddingTop: { xs: 3, sm: 0 },
+                  paddingTop: { xs: 1, sm: 0 },
                   paddingBottom: { xs: 2, sm: 0 },
-                  marginBottom: { xs: 3, sm: 0 }
+                  marginBottom: { xs: '5vh', sm: 0 }
                 }}>
                 {currentSpecies[displayedSpecies].map((person) => (
                   <Grid item key={person.name}>
@@ -223,7 +224,7 @@ export default function Home() {
 
   const paginationStyles = () => {
     // if (mobile) return styles.pages
-    if (md || md_height) return styles.pagesAlt
+    // if (md || md_height) return styles.pagesAlt
     return styles.pages
   }
 
@@ -232,7 +233,14 @@ export default function Home() {
       <Box sx={{ flexDirection: 'column', display: 'flex' }}>
         <Box sx={{ flexDirection: { xs: 'column', sm: 'row' }, display: 'flex' }}>
           <Box sx={{ flexDirection: 'column', display: 'flex' }}>
-            <Box sx={{ width: 200, p: 2, marginLeft: -2 }}>
+            <Box
+              sx={{
+                width: { xs: '80vw', sm: 200 },
+                p: { xs: '0px 0px 16px 16px', sm: 2 },
+                marginLeft: -2,
+                // marginTop: { xs: -2, sm: 0 },
+                marginBottom: { xs: 2, sm: 0 }
+              }}>
               <SearchAppBar handleSearch={handleSearch} />
             </Box>
             {displayedSpecies ? (
@@ -248,7 +256,9 @@ export default function Home() {
           <Container maxWidth="md">{renderPeople()}</Container>
         </Box>
         <Pagination
-          size={mobile ? 'small' : 'medium'}
+          size={md || mobile ? 'small' : 'medium'}
+          boundaryCount={1}
+          siblingCount={1}
           count={pageCount}
           variant="outlined"
           color="primary"
