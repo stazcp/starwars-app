@@ -8,7 +8,7 @@ import useWindowSize from '../hooks/windowSize'
 const ButtonRoot = forwardRef(function ButtonRoot(props, ref) {
   const [size, setSize] = useState('150')
   const [offset, setOffset] = useState('155')
-  const [polygonValues, setPolygonValues] = useState('0,155 ,5 155,0 150, 150')
+  const [polygonValues, setPolygonValues] = useState('0,155 5,5 155,0 150, 150')
   const { children, ...other } = props
   const sm = useMediaQuery('(max-width:600px)')
   const tablet = useMediaQuery('(max-width:900px)')
@@ -32,6 +32,7 @@ const ButtonRoot = forwardRef(function ButtonRoot(props, ref) {
   }, [screenSize])
 
   const resetSize = (value = 150) => {
+    if (typeof value !== 'number') value = 150
     setSize(`${value}`)
     setOffset(`${value + 5}`)
     setPolygonValues(`0,${value + 5} 5,5 ${value + 5},0 ${value},${value}`)

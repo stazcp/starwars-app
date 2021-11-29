@@ -9,23 +9,47 @@ import { createTheme, ThemeProvider, styled } from '@mui/material/styles'
 import { Routes, Route } from 'react-router-dom'
 import AppContextProvider from '../store/appContext'
 
-const darkTheme = createTheme({
+const font = "'Press Start 2P', 'cursive'"
+
+const theme = createTheme({
   palette: {
     mode: 'dark'
+  },
+  typography: {
+    fontFamily: font,
+    h4: {
+      fontSize: '1.6rem',
+      '@media (max-width:900px)': {
+        fontSize: '1rem'
+      }
+    },
+    body1: {
+      fontSize: '0.8rem',
+      '@media (max-width:900px)': {
+        fontSize: '0.7rem'
+      }
+    }
   }
 })
 
-const lightTheme = createTheme({
-  palette: {
-    mode: 'light'
-  }
-})
+// theme.typography.body1 = {
+//   fontSize: '0.8rem',
+//   fontWeight: 400
+//   // fontFamily: font
+//   //   // fontSize: '1.2rem',
+//   //   // '@media (min-width:600px)': {
+//   //   //   fontSize: '1.5rem'
+//   //   // },
+//   //   // [theme.breakpoints.up('md')]: {
+//   //   //   fontSize: '2rem'
+//   //   // }
+// }
 
 export default function App() {
   const size = useWindowSize()
 
   return (
-    <ThemeProvider theme={darkTheme}>
+    <ThemeProvider theme={theme}>
       <AppContextProvider>
         <CssBaseline />
         <div

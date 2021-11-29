@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { fetchData, fetchPage, fetchUrl, fetchSearch } from '../api'
 import { SvgButton } from './SvgButton'
-import { Grid, Box, Container, Pagination } from '@mui/material'
+import { Grid, Box, Container, Pagination, Typography } from '@mui/material'
 import SpeciesRadio from './SpeciesRadio'
 import { useNavigate } from 'react-router-dom'
 import { AppContext } from '../store/appContext'
@@ -21,7 +21,11 @@ export default function Home() {
   const { setPerson } = useContext(AppContext)
   const navigate = useNavigate()
   const smallLaptop = useMediaQuery('(max-width:1130px)')
-  const md = useMediaQuery('(max-width:764px)')
+  const md = useMediaQuery('(max-width:700px)')
+  const md_height = useMediaQuery('(max-height:620px)')
+  const desktop = useMediaQuery('(min-width:1130px)')
+  const xxl = useMediaQuery('(min-width:1600px) and (min-height:800px)')
+  // const sm = useMediaQuery('(max-width: )')
 
   useEffect(() => {
     init()
@@ -146,7 +150,19 @@ export default function Home() {
   const buttonSize = () => {
     let elements = currentSpecies[displayedSpecies].length
     if (elements > 6 && smallLaptop) return 150
-    if (elements < 8) return 200
+    // if (elements < 8) return 200
+  }
+
+  const setOverflow = () => {
+    let elements = currentSpecies[displayedSpecies].length
+    if (xxl) return 'visible'
+    if (desktop && elements < 9) {
+      return 'visible'
+    } else if (desktop && elements > 8) {
+      return 'auto'
+    } else {
+      return 'auto'
+    }
   }
 
   const renderPeople = () => {
@@ -159,12 +175,14 @@ export default function Home() {
               alignItems="center"
               justifyContent="center"
               spacing={2}
-              sx={{ maxHeight: 600, overflowY: 'auto' }}>
+              sx={{ maxHeight: '85vh', overflowY: [setOverflow()] }}>
               {currentSpecies[displayedSpecies].map((person) => (
                 <Grid item key={person.name}>
                   <div id={person.name} onClick={(e) => handleClick(e)}>
-                    <SvgButton newSize={200}>
-                      <Box sx={{ padding: 2 }}>{person.name}</Box>
+                    <SvgButton newSize={buttonSize()}>
+                      <Box sx={{ padding: 2 }}>
+                        <Typography variant="body1"> {person.name}</Typography>
+                      </Box>
                     </SvgButton>
                   </div>
                 </Grid>
@@ -176,6 +194,13 @@ export default function Home() {
         console.error(error)
       }
     }
+  }
+
+  const paginationStyles = () => {
+    if (md || md_height) {
+      return { justifyContent: 'center', display: 'flex', marginBottom: 1, marginTop: 1 }
+    }
+    return { position: 'absolute', bottom: 15, left: '50%', transform: `translate(-50%, -50%)` }
   }
 
   return (
@@ -205,8 +230,7 @@ export default function Home() {
           variant="outlined"
           color="primary"
           onChange={handlePageChange}
-          sx={{ position: 'absolute', bottom: 15, left: '50%', transform: `translate(-50%, -50%)` }}
-          // sx={{ justifyContent: 'center', display: 'flex', paddingTop: 10 }}
+          sx={paginationStyles()}
         />
       </Box>
     </Container>
