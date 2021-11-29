@@ -1,4 +1,4 @@
-# App deployed
+## App deployed
 
 https://starwars-hero.vercel.app/
 
