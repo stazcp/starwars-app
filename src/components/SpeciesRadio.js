@@ -8,7 +8,7 @@ import { Box } from '@mui/material'
 
 export default function SpeciesRadio({ species, handleChange, value }) {
   return (
-    <Box sx={{ marginBottom: 1 }}>
+    <Box sx={{ marginBottom: 1, overflowX: 'auto' }}>
       <FormControl component="fieldset">
         <FormLabel component="legend">Species</FormLabel>
         <RadioGroup

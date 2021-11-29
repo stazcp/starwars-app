@@ -30,7 +30,6 @@ const ButtonRoot = forwardRef(function ButtonRoot(props, ref) {
   }, [screenSize])
 
   const resetSize = (value = 500) => {
-    console.log(value)
     if (typeof value !== 'number') value = 500
     setSize(`${value}`)
     setOffset(`${value + 5}`)

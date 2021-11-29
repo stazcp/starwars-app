@@ -90,7 +90,7 @@ export default function Person() {
         let x = film.split('/')
         let index = x[x.length - 2]
         return (
-          <Box sx={{ padding: 1 }}>
+          <Box sx={{ padding: 1 }} key={index}>
             <ButtonBase onClick={handleOpenModal}>
               <img src={findPoster(index)} alt="" width={180} height={250} id={index} />
             </ButtonBase>

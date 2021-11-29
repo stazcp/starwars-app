@@ -163,12 +163,6 @@ export default function Home() {
     setPeople(result)
   }
 
-  const buttonSize = () => {
-    let elements = currentSpecies[displayedSpecies].length
-    if (elements > 6 && smallLaptop) return 150
-    // if (elements < 8) return 200
-  }
-
   const setOverflow = () => {
     let elements = currentSpecies[displayedSpecies].length
     if (xxl) return 'visible'
@@ -204,7 +198,7 @@ export default function Home() {
                 {currentSpecies[displayedSpecies].map((person) => (
                   <Grid item key={person.name}>
                     <Box id={person.name} onClick={(e) => handleClick(e)}>
-                      <SvgButton newSize={buttonSize()}>
+                      <SvgButton>
                         <Box sx={{ padding: 2 }}>
                           <Typography variant="body1"> {person.name}</Typography>
                         </Box>

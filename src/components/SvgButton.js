@@ -31,6 +31,13 @@ const ButtonRoot = forwardRef(function ButtonRoot(props, ref) {
     }
   }, [screenSize])
 
+  //  ⚠️ check if elements fit properly
+  //  const buttonSize = () => {
+  //    let elements = currentSpecies[displayedSpecies].length
+  //    if (elements > 6 && smallLaptop) return 150
+  //    // if (elements < 8) return 200
+  //  }
+
   const resetSize = (value = 150) => {
     if (typeof value !== 'number') value = 150
     setSize(`${value}`)

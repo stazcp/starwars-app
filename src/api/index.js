@@ -31,7 +31,6 @@ export const fetchUrl = async (url) => {
     let resp = await fetch(url)
     if (!resp.ok) throw new Error('Fetch failed!')
     let data = await resp.json()
-    console.log(data)
     return data
   } catch (error) {
     console.error(error)
