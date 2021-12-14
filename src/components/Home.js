@@ -89,12 +89,16 @@ export default function Home() {
   // getting all pages for species in order to sort people with
   const getAllSpecies = async () => {
     let data = await fetchData('species')
-    addSpecies(data)
-    while (data.next) {
-      data = await fetchUrl(data.next)
+    if (data) {
       addSpecies(data)
+      while (data.next) {
+        data = await fetchUrl(data.next)
+        addSpecies(data)
+      }
+      setLoadingData(false)
+    } else {
+      console.error('It seems that fetching data has failed!')
     }
-    setLoadingData(false)
   }
 
   const addSpecies = (data) => {
